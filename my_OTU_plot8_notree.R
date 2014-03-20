@@ -371,7 +371,7 @@ my_OTU_plot <- function(my_phyloseq,topN=9,verbose=FALSE,plot_title="OTU_plot",r
 #  }
   
   results_link <- paste("<a href='",writefile,"'>",plot_title,": OTU taxonomy and statistical results</a><br>",sep="")
-  stat_link <- paste("<a href='",STATS_dir,"'>Directory containing stat tables for each test</a><br>",sep="")
+  stat_link <- paste("<a href='",STATS_dir,"'>Directory containing stat tables for each test</a>",sep="")
   # post_hoc_link <- paste("<a href='",post_hoc_file,"'>Post-hoc tests for significant results</a><br>",sep="")
   #post_hoc_link = post_hoc_link,
   
