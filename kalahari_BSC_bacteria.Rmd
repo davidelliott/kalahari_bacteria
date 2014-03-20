@@ -21,7 +21,7 @@ Niche partitioning of bacterial communities in biological soil crusts and subsoi
 options(width=160)
 do_extras <- TRUE
 # Load required packages
-library("phyloseq"); library("ggplot2"); library("scales"); library("grid"); library("reshape"); library(RColorBrewer); library("xtable")
+library("phyloseq"); library("ggplot2"); library("scales"); library("grid"); library("reshape"); library(RColorBrewer); library("xtable"); library("vegan")
 packageVersion("phyloseq")
 packageVersion("ggplot2")
 packageVersion("scales")
@@ -129,13 +129,21 @@ if( !file.exists(objects_dir) ) { dir.create(objects_dir) }
 ```
 
 ## Pre-process data for each analysis
+
+### Richness / diversity
+The full data set was used with original count data and without rarefaction, according to recommendation of the phyloseq and vegan documentation. Rarefaction was used in an earlier version of the analysis. With rarefaction to 437 sequences (excluding 2 samples) the results and statistical tests (see later) followed almost exactly the same profile, although the absolute values changed a bit.
+
+```{r prep_diversity,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6}
+
+expt.diversity <- expt
+
+save(expt.diversity,file=paste(objects_dir,"/expt_diversity.rda",sep=""))
+```
+
 ### OTU abundance plots and comparisons
-Sequence observations converted to percentage for each sample, to allow easy comparison between samples of different sequencing depth. 
+Sequence observations were converted to percentage for each sample, to allow comparison between samples of different sequencing depth. 
 ```{r prep_OTUs,echo=FALSE,warning=FALSE}
 expt.rel <- transform_sample_counts(expt, function(x) 100*x/(sum(x)))
-#rank.names(expt.rel)
-#tax_table(expt.rel)[,"Phylum"]=="Actinobacteria"
-#tax_table(expt.rel)[tax_table(expt.rel)[,"Phylum"]=="Actinobacteria","Phylum"] <- "Actinobacteria2"
 
 # If NA in phylum position of taxonomy table then change it to "Unidentified"
 tax_table(expt.rel)[tax_table(expt.rel)[,"Phylum"]==NA,"Phylum"] <- "Unidentified"
@@ -145,54 +153,12 @@ expt.filtered <- expt.rel
 n_removed <- ntaxa(expt) - ntaxa(expt.filtered)
 ```
 
-### Richness / diversity
-Per-sample data was rarefied to an even sequencing depth. A merged object was also made to combine all of the similar sample types for a better estimation of alpha diversity (but without replication). This object was rarefied to the minimum sequencing depth of the set.
-
-```{r prep_diversity,echo=FALSE,warning=FALSE,fig.width=12,fig.height=6}
-cat("Summary of read lengths in original quality controlled experiment")
-summary(sample_sums(expt))
-sort(sample_sums(expt))
-plot(sort(sample_sums(expt)))
-even_depth <- 437
-cat("Rarefaction to depth of",even_depth,"sequences per sample:")
-expt.rare <- rarefy_even_depth(expt,sample.size=even_depth,rngseed=42,replace=FALSE,trimOTUs=TRUE)
-#sample_sums(expt.rare)
-
-expt.diversity <- expt.rare
-
-# Prepare merged object for richness estimates later
-sample_data(this_analysis)$zone_type <- paste(sample_data(this_analysis)$zone_code,sample_data(this_analysis)$type,sep="_")
-# merge samples of same type to increase depth of coverage (for richness estimate)
-this_analysis.merged <- merge_samples(this_analysis, "zone_type")
-sort(sample_sums(this_analysis.merged))
-# repair variables that were damaged during merge (coerced to numeric)
-sample_data(this_analysis.merged)$zone_type <- factor(sample_names(this_analysis.merged))
-sample_data(this_analysis.merged)$zone <- gsub(pattern="_.*",replacement="",x=sample_data(this_analysis.merged)$zone_type)
-sample_data(this_analysis.merged)$zone_code <-  gsub(pattern="_.*",replacement="",x=sample_data(this_analysis.merged)$zone_type)
-sample_data(this_analysis.merged)$type <- gsub(pattern=".*_",replacement="",x=sample_data(this_analysis.merged)$zone_type)
-
-# rarefy the merged experiment too
-cat("Summary of read lengths in original quality controlled experiment - merged by sample type")
-summary(sample_sums(this_analysis.merged))
-cat("Rarefaction to depth of",summary(sample_sums(this_analysis.merged))[1],"sequences per sample:")
-
-expt.diversity.merged <- rarefy_even_depth(sample.size=summary(sample_sums(this_analysis.merged))[1],this_analysis.merged,rngseed=42,replace=FALSE,trimOTUs=TRUE)
-
-save(expt.diversity,file=paste(objects_dir,"/expt_diversity.rda",sep=""))
-```
-
 ### Ordination
 OTUs accounting for < 0.01% of sequences found in the study were excluded from ordinations.
 ```{r echo=FALSE,message=FALSE}
-even_option <- "FALSE"
-if(even_option) {
-  expt.temp <- expt.diversity
-  cat("Using even sampling depth of",even_depth,"for ordinations")
-  cat("NOTE - this option will give the wrong result. Abundance trimming needs to be done based on the original data, not the even depth data. Anyway, results are similar regardless.")
-} else {
   expt.temp <- expt
   # rarefied object was tried, results very similar but loss of samples and data")
-}
+
 # suitable subsetting method was investigated in file "bacteria_ordination_exploration_depth.Rmd"
 total_seqs <- sum(speciesSums(expt.temp))
 total_OTUs <- nspecies(expt.temp)
@@ -225,23 +191,13 @@ p_chem = p_chem + scale_colour_manual(values=fill_pal) + scale_fill_manual(value
 
 ```
 
-**Figure 3.** OTU richness estimation (Chao1) and diversity index (Shannon) in crust and subsoil. a. Comparison of measures at each site; b. Individual sample richness/diversity with respect to sample carbon content. Boxes represent the interquartile range (IQR), and error bars extend to the most extreme values within 1.5 * IQR of the box. Median values are shown as a line within the box and outliers are shown as black spots. Sample coding: AG=annual grass, PG=perennial grass, S=shrub, T=tree. Source data were rarefied to an even sampling depth of `r even_depth ` sequences per sample.
+**Figure 3.** OTU richness estimation (Chao1) and diversity index (Shannon) in crust and subsoil. a. Comparison of measures at each site; b. Individual sample richness/diversity with respect to sample carbon content. Boxes represent the interquartile range (IQR), and error bars extend to the most extreme values within 1.5 * IQR of the box. Median values are shown as a line within the box and outliers are shown as black spots. Sample coding: AG=annual grass, PG=perennial grass, S=shrub, T=tree. 
 
 <a href='figures/Fig3[rich].png'><img src="figures/Fig3[rich].png" width='1000'></a>
 
 ```{r richness,echo=FALSE}
 # Richness - must be done before subsetting the data
 alpha_measures <- c("Chao1","Shannon")
-
-# plot of richness vs zone
-plot_title <- "Diversity of merged samples"
-p_rich_zone <- plot_richness(expt.diversity.merged, x = "zone_code", title=plot_title,color="type",shape="type",measures = alpha_measures) 
-p_rich_zone = p_rich_zone + geom_point(size=5, alpha=alpha)
-# Remove the original non-transparent, small-size `geom_point` layer.
-p_rich_zone$layers = p_rich_zone$layers[-1]
-# Set the manual color and shape scales
-p_rich_zone = p_rich_zone + scale_colour_manual(values=color_pal,name="Depth") + scale_shape_manual(values=shape_scale,name="Depth")
-#p_rich_zone
 
 # plot of richness vs zone boxplot
 plot_title <- "a"
@@ -253,9 +209,6 @@ p_rich_zone2$layers = p_rich_zone2$layers[c(-1,-2)]
 p_rich_zone2 = p_rich_zone2 + scale_fill_manual(values=fill_pal, name="Depth")
 # set titles
 p_rich_zone2 = p_rich_zone2 + xlab("vegetation")
-
-p_rich_zone3 =  p_rich_zone2 + geom_point(data=p_rich_zone$data,mapping=p_rich_zone$mapping,scale=p_rich_zone$scales,theme=p_rich_zone$theme,size=5, alpha=alpha) + geom_errorbar(data=p_rich_zone$data,mapping=p_rich_zone$layers[[1]]$mapping)
-#p_rich_zone2
 
 # plot of richness vs carbon
 plot_title <- "b"
@@ -270,7 +223,6 @@ p_rich_carbon = p_rich_carbon + scale_colour_manual(values=color_pal, name="Vege
 # set titles
 p_rich_carbon = p_rich_carbon + xlab("% w/w carbon")
 
-#p_rich_carbon
 
 ```
 
@@ -676,19 +628,13 @@ kruskalmc(rich.plus$Chao1 ~ rich.plus$zone_code)
 
 ```
 
-```{r save_data, eval=FALSE,echo=FALSE}
+```{r save_data, eval=TRUE,echo=FALSE}
 
 write.table(estimate_richness(expt.diversity, split=TRUE), 
 paste(tables_dir,"richness_split.txt",sep="/"),sep="\t")
 
 write.table(estimate_richness(expt.diversity, split=FALSE), 
 paste(tables_dir,"richness.txt",sep="/"),sep="\t")
-
-write.table(estimate_richness(expt.diversity.merged, split=TRUE), 
-paste(tables_dir,"richness_merged_split.txt",sep="/"),sep="\t")
-
-write.table(estimate_richness(expt.diversity.merged, split=FALSE), 
-paste(tables_dir,"richness_merged.txt",sep="/"),sep="\t")
 
 ```
 
@@ -931,12 +877,12 @@ boxplot(mod)
 
 
 **Constrained and unconstrained ordinations with scree plots.**
-<a href='figures/OR4[ordination].png'><img src='figures/OR4[ordination].png', width='800'></a>
+<a href='figures/OR2[ordination].png'><img src='figures/OR2[ordination].png', width='800'></a>
 
 
-```{r unifrac,eval=FALSE}
-# UNIFRAC is slow
-# results reasonably similar to CCA bray
+```{r unifrac,eval=FALSE,echo=FALSE}
+# UNIFRAC is slow, 
+# results reasonably similar to CCA bray. NOT RUN. Kept for reference
 # UNIFRAC Principal components
 phy_tree(expt.ord) = root(phy_tree(expt.ord.even), sample(taxa_names(expt.ord.even), 1), resolve.root = TRUE)
 ordu = ordinate(expt.ord.even, "PCoA", "unifrac", weighted = TRUE)

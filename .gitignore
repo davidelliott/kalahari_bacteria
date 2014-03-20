@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+R_objects/
+figure/
+figures/
+figures_extra/
+statistics/
+tables/
+*.html
+*.Rproj
+kalahari_BSC_bacteria.md
+kalahari_pyro_all_v18(post_review).md
