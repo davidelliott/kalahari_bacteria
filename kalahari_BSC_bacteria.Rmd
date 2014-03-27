@@ -221,7 +221,7 @@ alpha_measures <- c("Chao1","Shannon")
 
 # plot of richness vs zone boxplot
 plot_title <- "a"
-p_rich_zone2 <- plot_richness(expt.diversity, x = "zone_code", title=plot_title,measures = alpha_measures) + theme(plot.title = element_text(hjust=-0.1))
+p_rich_zone2 <- plot_richness(expt.diversity, x = "zone_code", title=plot_title,measures = alpha_measures) + theme(plot.title = element_text(hjust=-0.1),legend.key = element_blank())
 p_rich_zone2 = p_rich_zone2 + geom_boxplot(alpha=alpha,aes(fill=depth2))
 # Remove the original non-transparent, small-size `geom_point` layer and error bars
 p_rich_zone2$layers = p_rich_zone2$layers[c(-1,-2)]
@@ -232,32 +232,34 @@ p_rich_zone2 = p_rich_zone2 + xlab("vegetation")
 
 # plot of richness vs carbon
 plot_title <- "b"
-p_rich_carbon <- plot_richness(expt.diversity, x="Carbon",  title=plot_title,measures = alpha_measures) + theme(plot.title = element_text(hjust=-0.1))
-p_rich_carbon = p_rich_carbon + geom_point(aes(color=zc_depth,fill=zc_depth,shape=zc_depth), size=4, alpha=alpha) 
-# Remove the original non-transparent, small-size `geom_point` layer.
-p_rich_carbon$layers = p_rich_carbon$layers[-1]
-# Set the manual color and shape scales
-p_rich_carbon = p_rich_carbon + scale_colour_manual(values=zcd_colours, name="scale") + scale_fill_manual(values=zcd_fill, name="scale") + scale_shape_manual(values=zcd_shapes, name="scale")
-# add trendline
-# p_rich_carbon = p_rich_carbon + stat_smooth(method="lm", se=FALSE) 
-# set titles
-p_rich_carbon = p_rich_carbon + xlab("% w/w carbon")
 
 zone_shapes <- zcd_shapes[c(1,3,5,7)]
 names(zone_shapes) <- names(zone_colours) 
 
-p_rich_carbon <- plot_richness(expt.diversity, x="Carbon",  title=plot_title,measures = alpha_measures) + theme(plot.title = element_text(hjust=-0.1),legend.key = element_blank())
-p_rich_carbon = p_rich_carbon + geom_point(aes(color=zone_code,fill=zc_depth,shape=zone_code), size=4, alpha=alpha) 
-# Remove the original non-transparent, small-size `geom_point` layer.
-p_rich_carbon$layers = p_rich_carbon$layers[-1]
+# make the figure
+p_rich_carbon <- plot_richness(expt.diversity, x="Carbon",  title=plot_title,measures = alpha_measures,color = "zone_code",  shape="zone_code") + theme(plot.title = element_text(hjust=-0.1),legend.key = element_blank())
 
-p_rich_carbon <- p_rich_carbon + 
-  scale_colour_manual(values=zone_colours, name="") + 
-  scale_fill_manual(values=zcd_fill, guide="none") + 
-  scale_shape_manual(values=zone_shapes, name="") 
+p_rich_carbon = p_rich_carbon + geom_point(aes(fill=zc_depth), size=4, alpha=alpha) 
+p_rich_carbon$layers = p_rich_carbon$layers[-1]
+p_rich_carbon <- p_rich_carbon + scale_colour_manual(values=zone_colours, name="Vegetation") + 
+  scale_fill_manual(values=zcd_fill, name="Vegetation", guide="none") + 
+  scale_shape_manual(values=zone_shapes, name="Vegetation") 
+p_rich_carbon = p_rich_carbon + xlab("% w/w carbon")
+
+###
+
+# make the legend as we want it
+# decided not to use this but kept here in-case of request from editorial office
+#p_rich_carbon_legend <- plot_richness(expt.diversity, x="Carbon",  title=plot_title,measures = alpha_measures,color = "zone_code",  shape="zone_code") + theme(plot.title = element_text(hjust=-0.1),legend.key = element_blank())
+
+#p_rich_carbon_legend = p_rich_carbon_legend + geom_point(aes(fill=zone_code), size=4, alpha=alpha) 
+#p_rich_carbon_legend$layers = p_rich_carbon_legend$layers[-1]
+#p_rich_carbon_legend <- p_rich_carbon_legend + scale_colour_manual(values=zone_colours, name="") + 
+#  scale_fill_manual(values=zone_colours, name="") + 
+#  scale_shape_manual(values=zone_shapes, name="") 
+#p_rich_carbon_legend
 
 ```
-
 
 ```{r abundant_otus3,echo=FALSE,message=FALSE,fig.width=16, comment="",fig.show='hide',warning=FALSE, eval=TRUE,results='hide',cache=FALSE}
 
@@ -420,12 +422,8 @@ text(ord, cex=0.7,select=top_OTUs, display = "spec",col="black",bg="white")
 
 # add legend
 
-#legend("topleft", cex=1, inset=c(-0.0,0), legend=c(zone_list,names(shape_scale[3:4])), bty = "n", col = c(zone_colours,"black","black"), pch = c(15,15,15,15,shape_scale[3:4]))
 zone_list_pretty <- gsub(pattern="_",replacement=" ",x=zone_list)
-
-
-legend("topleft", cex=1, inset=c(-0.0,0), legend=c(zone_list_pretty), bty = "n", pt.bg=zcd_colours[c("AG1","PG0","S0","T0")],col=zcd_colours[c("AG0","PG0","S0","T0")], pch=zcd_shapes[c("AG0","PG0","S0","T0")])
-
+legend("topleft", cex=1, inset=c(-0.0,0), legend=c(zone_list_pretty), bty = "n", pt.bg=zcd_fill[c("AG1","PG1","S1","T1")],col=zcd_colours[c("AG0","PG0","S0","T0")], pch=zcd_shapes[c("AG0","PG0","S0","T0")],pt.lwd=2)
 
 dev.off()
 
