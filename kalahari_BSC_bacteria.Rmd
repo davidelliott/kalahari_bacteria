@@ -61,18 +61,18 @@ colnames(tax_table(expt)) = c("Kingdom", "Phylum", "Class", "Order", "Family", "
 tax_table(expt)[,colnames(tax_table(expt))] <- gsub(tax_table(expt)[,colnames(tax_table(expt))],pattern="[a-z]__",replacement="")
 
 # Add new names to sample data for plots
-sam_data(expt)$depth2 <- "0-1 cm"
-sam_data(expt)$depth2[sam_data(expt)$depth == 1] <- "1-2 cm"
+sample_data(expt)$depth2 <- "0-1 cm"
+sample_data(expt)$depth2[sample_data(expt)$depth == 1] <- "1-2 cm"
 
-samples <- as.character(sam_data(expt)$X.SampleID)
-sam_data(expt)$samples <- as.factor(substr(samples, 1, nchar(samples)-1))
+samples <- as.character(sample_data(expt)$X.SampleID)
+sample_data(expt)$samples <- as.factor(substr(samples, 1, nchar(samples)-1))
 
 #relevel(as.factor(substr(samples, 1, nchar("samples")-1)))
 # print(qiime_dir)
 print(expt)
 # Remove Mitochondria and Chloroplast. No mitochondria found.
 
-expt <- subset_species(expt,Class!="Chloroplast")
+expt <- subset_taxa(expt,Class!="Chloroplast")
 
 this_analysis <- expt
 # Add in C:N ratio and 2-line zone description
@@ -81,6 +81,9 @@ map.df$zone2line <- sub(pattern="_",replacement="\n",x=map$zone)
 
 map.df$depth2 <- "0-1 cm"
 map.df$depth2[map.df$depth == 1] <- "1-2 cm"
+map.df$zc_depth <- paste(map.df$zone_code,map.df$depth, sep='')
+
+sample_data(expt)$zc_depth <- paste(sample_data(expt)$zone_code,sample_data(expt)$depth,sep="")
 
 ```
 Chloroplast and mitochondrial sequences were removed after import (very few reads).
@@ -119,6 +122,22 @@ type_names <- c("crust","subsoil")
 cover_names <- c("canopy","open")
 zone_code_list <- levels(factor(sample_data(expt)$zone_code))
 zone_list <- levels(factor(sample_data(expt)$zone))
+
+# zone/depth shapes and colours - added during proofing stage
+
+zcd <- sort(unique(map.df$zc_depth))
+
+zcd_shapes <- c(21,21,22,22,23,23,24,24)
+zcd_colours <- color_pal[c("AG","AG","PG","PG","S","S","T","T")]
+zcd_fill <- zcd_colours
+zcd_fill[c(2,4,6,8)] <- "#FFFFFF"
+zcd_solid <- c(TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE)
+
+names(zcd_shapes) = zcd
+names(zcd_colours) = zcd
+names(zcd_fill) = zcd
+names(zcd_solid) = zcd
+
 ```
 
 ```{r echo=FALSE}
@@ -149,7 +168,7 @@ expt.rel <- transform_sample_counts(expt, function(x) 100*x/(sum(x)))
 # If NA in phylum position of taxonomy table then change it to "Unidentified"
 tax_table(expt.rel)[tax_table(expt.rel)[,"Phylum"]==NA,"Phylum"] <- "Unidentified"
 
-# expt.filtered <- subset_species(expt.rel,Phylum!="NA")
+# expt.filtered <- subset_taxa(expt.rel,Phylum!="NA")
 expt.filtered <- expt.rel
 n_removed <- ntaxa(expt) - ntaxa(expt.filtered)
 ```
@@ -161,10 +180,10 @@ OTUs accounting for < 0.01% of sequences found in the study were excluded from o
   # rarefied object was tried, results very similar but loss of samples and data")
 
 # suitable subsetting method was investigated in file "bacteria_ordination_exploration_depth.Rmd"
-total_seqs <- sum(speciesSums(expt.temp))
-total_OTUs <- nspecies(expt.temp)
+total_seqs <- sum(taxa_sums(expt.temp))
+total_OTUs <- ntaxa(expt.temp)
 
-rare_removed <- prune_species( (speciesSums(expt.temp) / total_seqs)>0.0001, expt.temp)
+rare_removed <- prune_taxa( (taxa_sums(expt.temp) / total_seqs)>0.0001, expt.temp)
   expt.ord <- rare_removed
 save(expt.ord,file=paste(objects_dir,"/expt_ord.rda",sep=""))
 ```
@@ -214,40 +233,52 @@ p_rich_zone2 = p_rich_zone2 + xlab("vegetation")
 # plot of richness vs carbon
 plot_title <- "b"
 p_rich_carbon <- plot_richness(expt.diversity, x="Carbon",  title=plot_title,measures = alpha_measures) + theme(plot.title = element_text(hjust=-0.1))
-p_rich_carbon = p_rich_carbon + geom_point(aes(color=zone_code,shape=depth2), size=4, alpha=alpha) 
+p_rich_carbon = p_rich_carbon + geom_point(aes(color=zc_depth,fill=zc_depth,shape=zc_depth), size=4, alpha=alpha) 
 # Remove the original non-transparent, small-size `geom_point` layer.
 p_rich_carbon$layers = p_rich_carbon$layers[-1]
 # Set the manual color and shape scales
-p_rich_carbon = p_rich_carbon + scale_colour_manual(values=color_pal, name="Vegetation") + scale_shape_manual(values=shape_scale, name="Depth")
+p_rich_carbon = p_rich_carbon + scale_colour_manual(values=zcd_colours, name="scale") + scale_fill_manual(values=zcd_fill, name="scale") + scale_shape_manual(values=zcd_shapes, name="scale")
 # add trendline
 # p_rich_carbon = p_rich_carbon + stat_smooth(method="lm", se=FALSE) 
 # set titles
 p_rich_carbon = p_rich_carbon + xlab("% w/w carbon")
 
+zone_shapes <- zcd_shapes[c(1,3,5,7)]
+names(zone_shapes) <- names(zone_colours) 
+
+p_rich_carbon <- plot_richness(expt.diversity, x="Carbon",  title=plot_title,measures = alpha_measures) + theme(plot.title = element_text(hjust=-0.1),legend.key = element_blank())
+p_rich_carbon = p_rich_carbon + geom_point(aes(color=zone_code,fill=zc_depth,shape=zone_code), size=4, alpha=alpha) 
+# Remove the original non-transparent, small-size `geom_point` layer.
+p_rich_carbon$layers = p_rich_carbon$layers[-1]
+
+p_rich_carbon <- p_rich_carbon + 
+  scale_colour_manual(values=zone_colours, name="") + 
+  scale_fill_manual(values=zcd_fill, guide="none") + 
+  scale_shape_manual(values=zone_shapes, name="") 
 
 ```
 
 
 ```{r abundant_otus3,echo=FALSE,message=FALSE,fig.width=16, comment="",fig.show='hide',warning=FALSE, eval=TRUE,results='hide',cache=FALSE}
 
-expt.phylum <- taxglom(expt.filtered,taxrank="Phylum")
+expt.phylum <- tax_glom(expt.filtered,taxrank="Phylum")
 calcs_for_manuscript["total phyla"] <- ntaxa(expt.phylum)
   
-TopNOTUs <- names(sort(speciesSums(expt.phylum), TRUE)[1:9])
- expt.phylum.top9 <- prune_species(TopNOTUs, expt.phylum)
+TopNOTUs <- names(sort(taxa_sums(expt.phylum), TRUE)[1:9])
+ expt.phylum.top9 <- prune_taxa(TopNOTUs, expt.phylum)
 calcs_for_manuscript["top 9 phyla sum"] <- mean(sample_sums(expt.phylum.top9))
 
-TopNOTUs <- names(sort(speciesSums(expt.phylum), TRUE)[1:16])
- expt.phylum.top16 <- prune_species(TopNOTUs, expt.phylum)
+TopNOTUs <- names(sort(taxa_sums(expt.phylum), TRUE)[1:16])
+ expt.phylum.top16 <- prune_taxa(TopNOTUs, expt.phylum)
 calcs_for_manuscript["top 16 phyla sum"] <- mean(sample_sums(expt.phylum.top16))
 
-expt.actinobacteria <- subset_species(expt.filtered, Phylum == "Actinobacteria")
-expt.proteobacteria <- subset_species(expt.filtered, Phylum == "Proteobacteria")
+expt.actinobacteria <- subset_taxa(expt.filtered, Phylum == "Actinobacteria")
+expt.proteobacteria <- subset_taxa(expt.filtered, Phylum == "Proteobacteria")
 calcs_for_manuscript["total actinobacteria"] <- mean(sample_sums(expt.actinobacteria))
 calcs_for_manuscript["total proteobacteria"] <- mean(sample_sums(expt.proteobacteria))
 
-TopNOTUs <- names(sort(speciesSums(expt.filtered), TRUE)[1:9])
- expt.top9 <- prune_species(TopNOTUs, expt.filtered)
+TopNOTUs <- names(sort(taxa_sums(expt.filtered), TRUE)[1:9])
+ expt.top9 <- prune_taxa(TopNOTUs, expt.filtered)
 calcs_for_manuscript["top 9 OTUs sum"] <- mean(sample_sums(expt.top9))
 
 phylum <- my_OTU_plot(expt.phylum,9,FALSE,"Phylum","Phylum")
@@ -261,33 +292,33 @@ abundant_OTUs <- my_OTU_plot(expt.filtered,9,FALSE,"All")
 abundant_OTUs.plots <- abundant_OTUs$plots
 
 # Bacteroidetes
-expt.bacteroidetes <- subset_species(expt.filtered, Phylum == "Bacteroidetes")
+expt.bacteroidetes <- subset_taxa(expt.filtered, Phylum == "Bacteroidetes")
 bacteroidetes <- my_OTU_plot(expt.bacteroidetes,9,FALSE,"Bacteroidetes",FALSE) 
 bacteroidetes.plots <- bacteroidetes$plots
 calcs_for_manuscript["total bacteroidetes"] <- mean(sample_sums(expt.bacteroidetes))
 
 # Cyanobacteria
-expt.cyanobacteria <- subset_species(expt.filtered, Phylum == "Cyanobacteria")
+expt.cyanobacteria <- subset_taxa(expt.filtered, Phylum == "Cyanobacteria")
 cyanobacteria <- my_OTU_plot(expt.cyanobacteria,9,FALSE,"Cyanobacteria",FALSE) 
 cyanobacteria.plots <- cyanobacteria$plots
 calcs_for_manuscript["total cyanobacteria"] <- mean(sample_sums(expt.cyanobacteria))
 
 # Select OTUs to show on the ordination
-top_OTUs <- names(sort(speciesSums(expt), TRUE)[1:9])
-top_cyanobacteria <- names(sort(speciesSums(expt.cyanobacteria), TRUE)[1:9])
-top_bacteroidetes <- names(sort(speciesSums(expt.bacteroidetes), TRUE)[1:9])
+top_OTUs <- names(sort(taxa_sums(expt), TRUE)[1:9])
+top_cyanobacteria <- names(sort(taxa_sums(expt.cyanobacteria), TRUE)[1:9])
+top_bacteroidetes <- names(sort(taxa_sums(expt.bacteroidetes), TRUE)[1:9])
 
-phylum_list <- unique(taxtab(expt.filtered)[,"Phylum"])
+phylum_list <- unique(tax_table(expt.filtered)[,"Phylum"])
 phylum_list <- phylum_list[!is.na(phylum_list)]
 total_of_top_9s <- 0
 phylum_name <- as.character(phylum_list)[2]
 for (phylum_name in as.character(phylum_list)) { 
-      expt.phylum <- subset_species(expt.filtered, Phylum == phylum_name)
+      expt.phylum <- subset_taxa(expt.filtered, Phylum == phylum_name)
       save_name <- paste(phylum_name," n OTUs",sep="")
       calcs_for_manuscript[save_name] <- ntaxa(expt.phylum)
 
-      TopNOTUs <- names(sort(speciesSums(expt.phylum), TRUE)[1:9])
-      expt.phylum.top9 <- prune_species(TopNOTUs, expt.phylum)
+      TopNOTUs <- names(sort(taxa_sums(expt.phylum), TRUE)[1:9])
+      expt.phylum.top9 <- prune_taxa(TopNOTUs, expt.phylum)
       
       save_name <- paste(phylum_name," top 9",sep="")
       calcs_for_manuscript[save_name] <- mean(sample_sums(expt.phylum.top9))
@@ -324,20 +355,20 @@ pp2 = pp2 + theme(plot.title = element_text(hjust=-0.1)) + ggtitle("b")
 # remove from Top OTUs list if already in another list
 top_OTUs <- top_OTUs[!top_OTUs %in% c(top_cyanobacteria,top_bacteroidetes)]
 # make sure the chosen OTU's have not been pruned out of the experiment being used for the ordination:
-top_OTUs <- intersect(top_OTUs,row.names(taxtab(expt.ord)))
-top_cyanobacteria <- intersect(top_cyanobacteria,row.names(taxtab(expt.ord)))
-top_bacteroidetes <- intersect(top_bacteroidetes,row.names(taxtab(expt.ord)))
+top_OTUs <- intersect(top_OTUs,row.names(tax_table(expt.ord)))
+top_cyanobacteria <- intersect(top_cyanobacteria,row.names(tax_table(expt.ord)))
+top_bacteroidetes <- intersect(top_bacteroidetes,row.names(tax_table(expt.ord)))
 
 # ordinate using phyloseq
 ord <- ordinate(expt.ord~zone+type, "CCA") 
 
-con_sites <-  plot_ordination(expt.ord,ord,"sites",title="Constrained by zone and type",color="zone_code",shape="type")  + theme(aspect.ratio=1)  + scale_shape_manual(values=shape_scale, name="Depth") + scale_colour_manual(values=fill_pal, name="Vegetation") + geom_point(size = 6,fill="white")
+con_sites <-  plot_ordination(expt.ord,ord,"sites",title="Constrained by zone and type",color="zc_depth",shape="zc_depth") + geom_point(size = 6,aes(fill="zc_depth")) + theme(aspect.ratio=1)  + scale_colour_manual(values=zcd_colours, name="scale") + scale_fill_manual(values=zcd_fill, name="scale") + scale_shape_manual(values=zcd_shapes, name="scale") 
 x_label <- as.character(con_sites$labels["x"])
 y_label <- as.character(con_sites$labels["y"])
 
 
 # get map out of phyloseq object and make some convenience names
-map.df3 <- data.frame(sampleData(expt.ord))
+map.df3 <- data.frame(sample_data(expt.ord))
 map.df3$C <- map.df3$Carbon
 map.df3$N <- map.df3$Nitrogen
 map.df3$CN <- map.df3$Carbon/map.df3$Nitrogen
@@ -369,11 +400,14 @@ ordiellipse(ord, map.df3$depth2,draw="polygon",show.groups="1-2 cm",alpha=20,lwd
 
 i <- 1
 # plot the points for each zone and type
- terr <- zone_list[1] # for testing
-for( terr in zone_list) {
-  points(ord, disp="si", select=(map.df3$zone==terr)&(map.df3$type=="crust"),cex = 1, pch=shape_scale[1], col=zone_colours[i])
-    points(ord, disp="si", select=(map.df3$zone==terr)&(map.df3$type=="subsoil"),cex = 1, pch=shape_scale[2], col=zone_colours[i],lwd=3)
-  i <- i+1
+ terr <- unique(map.df3$zc_depth)[1] # for testing
+unique(map.df3$zc_depth)
+
+for( terr in unique(map.df3$zc_depth)) {
+  points(ord, disp="si", select=(map.df3$zc_depth==terr)&(map.df3$type=="crust"),cex = 1, pch=zcd_shapes[terr], col=zcd_colours[terr], bg=zcd_fill[terr])
+  points(ord, disp="si", select=(map.df3$zc_depth==terr)&(map.df3$type=="subsoil"),cex = 1, pch=zcd_shapes[terr], col=zcd_colours[terr], bg=zcd_fill[terr],lwd=2)
+  #lwd=1+(map.df3$depth*2)
+#    points(ord, disp="si", select=(map.df3$zone==terr)&(map.df3$type=="subsoil"),cex = 1, pch=shape_scale[2], col=zone_colours[i],lwd=3)
 }
 
 # show the most significant variables
@@ -386,7 +420,13 @@ text(ord, cex=0.7,select=top_OTUs, display = "spec",col="black",bg="white")
 
 # add legend
 
-legend("topleft", cex=1, inset=c(-0.0,0), legend=c(zone_list,names(shape_scale[3:4])), bty = "n", col = c(zone_colours,"black","black"), pch = c(15,15,15,15,shape_scale[3:4]))
+#legend("topleft", cex=1, inset=c(-0.0,0), legend=c(zone_list,names(shape_scale[3:4])), bty = "n", col = c(zone_colours,"black","black"), pch = c(15,15,15,15,shape_scale[3:4]))
+zone_list_pretty <- gsub(pattern="_",replacement=" ",x=zone_list)
+
+
+legend("topleft", cex=1, inset=c(-0.0,0), legend=c(zone_list_pretty), bty = "n", pt.bg=zcd_colours[c("AG1","PG0","S0","T0")],col=zcd_colours[c("AG0","PG0","S0","T0")], pch=zcd_shapes[c("AG0","PG0","S0","T0")])
+
+
 dev.off()
 
 # now display the image we just saved:
@@ -657,8 +697,8 @@ con_taxa <-  plot_ordination(expt.ord,ord,"taxa",title="Constrained by zone and 
 unc_taxa <-  plot_ordination(expt.ord,ord.unconstrained,"taxa",title="Unconstrained (taxa)",color = "Phylum") + geom_point(size = 3,alpha = 0.6) + scale_colour_hue() + theme(aspect.ratio=1) 
 
 # SITES - check for reviewer 2
-samples <- as.character(sam_data(expt)$X.SampleID)
-sam_data(expt.ord)$samples <- as.factor(substr(samples, 1, nchar(samples)-2))
+samples <- as.character(sample_data(expt)$X.SampleID)
+sample_data(expt.ord)$samples <- as.factor(substr(samples, 1, nchar(samples)-2))
 ############
 months_constrained <- plot_ordination(expt.ord,ord,"sites",title="Constrained by zone and type\nSame sites are joined by a line",color="samples", shape="zone")  + geom_polygon(aes(fill = samples)) + theme(aspect.ratio=1) + geom_point(size = 6) + facet_wrap(~type) 
 
@@ -740,11 +780,11 @@ __Each Phylum in turn:__
 See plots in folder [`r extra_figures_dir `](`r extra_figures_dir `) and results in [`r STATS_dir `](`r STATS_dir `)
 ```{r sub_bac_fun,echo=FALSE,message=FALSE,fig.width=16, comment="",fig.show='hold',warning=FALSE, eval=TRUE, results='hide'}
 if(do_extras){
-    phylum_list <- unique(taxtab(expt.filtered)[,"Phylum"])
+    phylum_list <- unique(tax_table(expt.filtered)[,"Phylum"])
   
     for (phylum_name in as.character(phylum_list)) { 
   
-          phylum <- subset_species(expt.filtered, Phylum == phylum_name)
+          phylum <- subset_taxa(expt.filtered, Phylum == phylum_name)
           # only process phyla observed in n_obs samples
           n_obs <- sum(colSums(otu_table(phylum))>0)
           if(n_obs < 16) {

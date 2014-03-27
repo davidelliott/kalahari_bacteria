@@ -65,15 +65,15 @@ my_OTU_plot <- function(my_phyloseq,topN=9,verbose=FALSE,plot_title="OTU_plot",r
   OTU_tree_file <- paste(extra_figures_dir,"/",plot_title,"_tree.png",sep="")
   
   # keep only top N taxa
-  TopNOTUs <- names(sort(speciesSums(my_phyloseq), TRUE)[1:topN])
-  my_phyloseq <- prune_species(TopNOTUs, my_phyloseq)
+  TopNOTUs <- names(sort(taxa_sums(my_phyloseq), TRUE)[1:topN])
+  my_phyloseq <- prune_taxa(TopNOTUs, my_phyloseq)
   
   if(rename_facets=="Phylum"){
-    taxa_names(my_phyloseq) <- taxtab(my_phyloseq)[,"Phylum"]
+    taxa_names(my_phyloseq) <- tax_table(my_phyloseq)[,"Phylum"]
     taxa_names(my_phyloseq) <- gsub(taxa_names(my_phyloseq),pattern="-",replacement=".")
    } 
   if(rename_facets=="Class"){
-    taxa_names(my_phyloseq) <- taxtab(my_phyloseq)[,"Class"]
+    taxa_names(my_phyloseq) <- tax_table(my_phyloseq)[,"Class"]
     taxa_names(my_phyloseq) <- gsub(taxa_names(my_phyloseq),pattern="-",replacement=".")
   } 
   
@@ -84,13 +84,13 @@ my_OTU_plot <- function(my_phyloseq,topN=9,verbose=FALSE,plot_title="OTU_plot",r
   
   sample_data(my_phyloseq)$zone_type <- paste(sample_data(my_phyloseq)$zone_code,sample_data(my_phyloseq)$type,sep="_")
   
-  sample_data(my_phyloseq)$sample <- row.names(samData(my_phyloseq))
-  samdata <- samData(my_phyloseq)[,c("sample","zone","zone_code","zone2line","cover","type","depth2","month")]
-  samdata.extended <- samData(my_phyloseq)[,c("sample","zone","zone_code","zone2line","cover","type","month","Carbon","Q10_soil")]
+  sample_data(my_phyloseq)$sample <- row.names(sample_data(my_phyloseq))
+  sample_data <- sample_data(my_phyloseq)[,c("sample","zone","zone_code","zone2line","cover","type","depth2","month")]
+  sample_data.extended <- sample_data(my_phyloseq)[,c("sample","zone","zone_code","zone2line","cover","type","month","Carbon","Q10_soil")]
   #,"Carbon","Q10_soil"
   # combine OTU and sample data 
-  OTUs_and_env_data <- data.frame(samdata,OTUs.t)
-  OTUs_and_env_data.extended <- data.frame(samdata.extended,OTUs.t)
+  OTUs_and_env_data <- data.frame(sample_data,OTUs.t)
+  OTUs_and_env_data.extended <- data.frame(sample_data.extended,OTUs.t)
   if(verbose) {
     cat("\nTable of OTU abundance per sample, with sample metadata:\n")
     print(OTUs_and_env_data)
@@ -114,7 +114,7 @@ my_OTU_plot <- function(my_phyloseq,topN=9,verbose=FALSE,plot_title="OTU_plot",r
   OTUs_and_env_data.melt$variable <- gsub(pattern="X",replacement="",x=OTUs_and_env_data.melt$variable)
   # plot the OTUs
   
-  # OTU_names <- row.names(taxtab(my_phyloseq))
+  # OTU_names <- row.names(tax_table(my_phyloseq))
   OTU_names <- row.names(OTUs.table)
 
   my_phyloseq.merged <- merge_samples(my_phyloseq,"zone_type") 
@@ -122,7 +122,7 @@ my_OTU_plot <- function(my_phyloseq,topN=9,verbose=FALSE,plot_title="OTU_plot",r
   # These counts need to be divided by 6 manually because Using the phyloseq method doesn't work as expected. The division is required because when merging samples they are "summed", not "averaged"
   OTU_prob_table <- as.data.frame(t(otu_table(my_phyloseq.merged)))/6
   colnames2 <- names(OTU_prob_table)
-  colnames <- names(as.data.frame(taxtab(my_phyloseq)))
+  colnames <- names(as.data.frame(tax_table(my_phyloseq)))
   # prepare columns to hold the taxonomy data
   OTU_prob_table[,colnames] <- "x"
   # re-ordering the columns for easier reading
@@ -203,7 +203,7 @@ my_OTU_plot <- function(my_phyloseq,topN=9,verbose=FALSE,plot_title="OTU_plot",r
     # No tests are done if we don't have both factors,
     # but the script can easily be changed to allow that
     
-    OTU_prob_table[OTU_name,colnames] <- as.character(taxtab(my_phyloseq)[ taxa_names(my_phyloseq)==OTU_name])
+    OTU_prob_table[OTU_name,colnames] <- as.character(tax_table(my_phyloseq)[ taxa_names(my_phyloseq)==OTU_name])
     
     OTU_prob_table[OTU_name,"prob_type"] <- stat_result_type
     if(length(unique(sample_data(my_phyloseq)$zone)) >1 ) {
@@ -294,7 +294,7 @@ my_OTU_plot <- function(my_phyloseq,topN=9,verbose=FALSE,plot_title="OTU_plot",r
                   + geom_boxplot()  
                   + theme(axis.text.x = element_text(angle = -90, vjust = 0.4))
                   + scale_fill_manual(values=fill_pal,name="Depth") )
-                  #+ scale_shape_manual(values=shape_scale,name="Depth"))
+                  #+ scale_shape_manual(values=zone_shape_scale,name="test"))
     #zone_plot
     
     # CARBON
