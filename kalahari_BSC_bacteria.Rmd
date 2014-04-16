@@ -362,8 +362,7 @@ top_cyanobacteria <- intersect(top_cyanobacteria,row.names(tax_table(expt.ord)))
 top_bacteroidetes <- intersect(top_bacteroidetes,row.names(tax_table(expt.ord)))
 
 # ordinate using phyloseq
-ord <- ordinate(expt.ord~zone+type, "CCA") 
-
+ord <- ordinate(expt.ord, "CCA",formula=~zone+type) 
 con_sites <-  plot_ordination(expt.ord,ord,"sites",title="Constrained by zone and type",color="zc_depth",shape="zc_depth") + geom_point(size = 6,aes(fill="zc_depth")) + theme(aspect.ratio=1)  + scale_colour_manual(values=zcd_colours, name="scale") + scale_fill_manual(values=zcd_fill, name="scale") + scale_shape_manual(values=zcd_shapes, name="scale") 
 x_label <- as.character(con_sites$labels["x"])
 y_label <- as.character(con_sites$labels["y"])
