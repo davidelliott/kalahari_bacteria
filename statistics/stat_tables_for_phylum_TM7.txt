@@ -1,0 +1,225 @@
+report for: phylum_TM7 
+phylum_TM7 : Using the top 9 of 28 taxa in group phylum_TM7 
+
+phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 28 taxa and 48 samples ]
+sample_data() Sample Data:       [ 48 samples by 24 sample variables ]
+tax_table()   Taxonomy Table:    [ 28 taxa by 7 taxonomic ranks ]
+
+A list of p-values corrected for multiple comparisons using the FDR method can be found in file tables/OTUs_phylum_TM7.csv
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  230 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 3, df = 3, p-value = 0.3916
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  239 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 3, df = 3, p-value = 0.3916
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  994 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 6.128, df = 3, p-value = 0.1056
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 9e-04, df = 1, p-value = 0.9762
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 2.043, df = 1, p-value = 0.153
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  1470 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 3, df = 3, p-value = 0.3916
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  2041 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 3, df = 3, p-value = 0.3916
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  2074 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 3, df = 3, p-value = 0.3916
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  2190 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 2.044, df = 3, p-value = 0.5633
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 2.043, df = 1, p-value = 0.153
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 2.043, df = 1, p-value = 0.153
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  2496 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 3, df = 3, p-value = 0.3916
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1, df = 1, p-value = 0.3173
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  2791 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 2.044, df = 3, p-value = 0.5633
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 2.043, df = 1, p-value = 0.153
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 2.043, df = 1, p-value = 0.153
+

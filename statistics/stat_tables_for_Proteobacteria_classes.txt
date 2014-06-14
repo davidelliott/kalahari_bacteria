@@ -1,0 +1,153 @@
+report for: Proteobacteria_classes 
+Proteobacteria_classes : Using the top 4 of 4 taxa in group Proteobacteria_classes 
+
+phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 4 taxa and 48 samples ]
+sample_data() Sample Data:       [ 48 samples by 24 sample variables ]
+tax_table()   Taxonomy Table:    [ 4 taxa by 7 taxonomic ranks ]
+
+A list of p-values corrected for multiple comparisons using the FDR method can be found in file tables/OTUs_Proteobacteria_classes.csv
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  Gammaproteobacteria : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 26.69, df = 3, p-value = 6.85e-06
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 1.939, df = 1, p-value = 0.1638
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 0.1996, df = 1, p-value = 0.655
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass   1.708        15.08      FALSE
+Annual_grass-Shrub            17.292        15.08       TRUE
+Annual_grass-Tree             24.500        15.08       TRUE
+Perennial_grass-Shrub         15.583        15.08       TRUE
+Perennial_grass-Tree          22.792        15.08       TRUE
+Shrub-Tree                     7.208        15.08      FALSE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  Betaproteobacteria : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 30.46, df = 3, p-value = 1.104e-06
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 2.204, df = 1, p-value = 0.1376
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 0.0344, df = 1, p-value = 0.8528
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass   5.667        15.08      FALSE
+Annual_grass-Shrub            15.208        15.08       TRUE
+Annual_grass-Tree             21.958        15.08       TRUE
+Perennial_grass-Shrub         20.875        15.08       TRUE
+Perennial_grass-Tree          27.625        15.08       TRUE
+Shrub-Tree                     6.750        15.08      FALSE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  Alphaproteobacteria : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 22.08, df = 3, p-value = 6.286e-05
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 0.6467, df = 1, p-value = 0.4213
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 2.328, df = 1, p-value = 0.127
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass  10.083        15.08      FALSE
+Annual_grass-Shrub            13.083        15.08      FALSE
+Annual_grass-Tree             12.000        15.08      FALSE
+Perennial_grass-Shrub         23.167        15.08       TRUE
+Perennial_grass-Tree          22.083        15.08       TRUE
+Shrub-Tree                     1.083        15.08      FALSE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  Deltaproteobacteria : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 25.4, df = 3, p-value = 1.272e-05
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 1.286, df = 1, p-value = 0.2568
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 0.551, df = 1, p-value = 0.4579
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass  0.6667        15.08      FALSE
+Annual_grass-Shrub           18.5000        15.08       TRUE
+Annual_grass-Tree            22.5000        15.08       TRUE
+Perennial_grass-Shrub        17.8333        15.08       TRUE
+Perennial_grass-Tree         21.8333        15.08       TRUE
+Shrub-Tree                    4.0000        15.08      FALSE

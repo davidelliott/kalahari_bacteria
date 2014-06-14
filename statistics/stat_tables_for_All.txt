@@ -1,0 +1,348 @@
+report for: All 
+All : Using the top 9 of 2705 taxa in group All 
+
+phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 2705 taxa and 48 samples ]
+sample_data() Sample Data:       [ 48 samples by 24 sample variables ]
+tax_table()   Taxonomy Table:    [ 2705 taxa by 7 taxonomic ranks ]
+
+A list of p-values corrected for multiple comparisons using the FDR method can be found in file tables/OTUs_All.csv
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  654 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 33.06, df = 3, p-value = 3.134e-07
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 3.044, df = 1, p-value = 0.08104
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 0.5052, df = 1, p-value = 0.4772
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass   1.750        15.08      FALSE
+Annual_grass-Shrub            20.250        15.08       TRUE
+Annual_grass-Tree             25.333        15.08       TRUE
+Perennial_grass-Shrub         18.500        15.08       TRUE
+Perennial_grass-Tree          23.583        15.08       TRUE
+Shrub-Tree                     5.083        15.08      FALSE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  761 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 18.6, df = 3, p-value = 0.0003307
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 4.516, df = 1, p-value = 0.03359
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 5.926, df = 1, p-value = 0.01491
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass   1.167        15.08      FALSE
+Annual_grass-Shrub            15.667        15.08       TRUE
+Annual_grass-Tree             17.833        15.08       TRUE
+Perennial_grass-Shrub         16.833        15.08       TRUE
+Perennial_grass-Tree          19.000        15.08       TRUE
+Shrub-Tree                     2.167        15.08      FALSE
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+              obs.dif critical.dif difference
+crust-subsoil   8.583        7.921       TRUE
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+        obs.dif critical.dif difference
+Mar-Nov   9.833        7.921       TRUE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  1064 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 2.744, df = 3, p-value = 0.4328
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 17.52, df = 1, p-value = 2.838e-05
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 0.4723, df = 1, p-value = 0.4919
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+              obs.dif critical.dif difference
+crust-subsoil   16.75        7.921       TRUE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  1150 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 26.98, df = 3, p-value = 5.934e-06
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 5.495, df = 1, p-value = 0.01908
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 0.0843, df = 1, p-value = 0.7715
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass   5.833        15.08      FALSE
+Annual_grass-Shrub            15.833        15.08       TRUE
+Annual_grass-Tree             19.000        15.08       TRUE
+Perennial_grass-Shrub         21.667        15.08       TRUE
+Perennial_grass-Tree          24.833        15.08       TRUE
+Shrub-Tree                     3.167        15.08      FALSE
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+              obs.dif critical.dif difference
+crust-subsoil   9.417        7.921       TRUE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  1912 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 10.52, df = 3, p-value = 0.01466
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 12.4, df = 1, p-value = 0.000429
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 0.8401, df = 1, p-value = 0.3594
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass  3.0000        15.08      FALSE
+Annual_grass-Shrub            9.4167        15.08      FALSE
+Annual_grass-Tree             9.5833        15.08      FALSE
+Perennial_grass-Shrub        12.4167        15.08      FALSE
+Perennial_grass-Tree         12.5833        15.08      FALSE
+Shrub-Tree                    0.1667        15.08      FALSE
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+              obs.dif critical.dif difference
+crust-subsoil   12.17        7.921       TRUE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  2850 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 16.37, df = 3, p-value = 0.0009517
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 12.93, df = 1, p-value = 0.0003231
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1.75, df = 1, p-value = 0.1859
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass   0.250        15.08      FALSE
+Annual_grass-Shrub             2.083        15.08      FALSE
+Annual_grass-Tree             19.333        15.08       TRUE
+Perennial_grass-Shrub          2.333        15.08      FALSE
+Perennial_grass-Tree          19.583        15.08       TRUE
+Shrub-Tree                    17.250        15.08       TRUE
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+              obs.dif critical.dif difference
+crust-subsoil    14.5        7.921       TRUE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  3067 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 11.27, df = 3, p-value = 0.01036
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 0.6151, df = 1, p-value = 0.4329
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1.611, df = 1, p-value = 0.2043
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                             obs.dif critical.dif difference
+Annual_grass-Perennial_grass  6.9583        15.08      FALSE
+Annual_grass-Shrub           16.3333        15.08       TRUE
+Annual_grass-Tree            15.8750        15.08       TRUE
+Perennial_grass-Shrub         9.3750        15.08      FALSE
+Perennial_grass-Tree          8.9167        15.08      FALSE
+Shrub-Tree                    0.4583        15.08      FALSE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  3302 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 34.77, df = 3, p-value = 1.363e-07
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 0.718, df = 1, p-value = 0.3968
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 0.5535, df = 1, p-value = 0.4569
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+                              obs.dif critical.dif difference
+Annual_grass-Perennial_grass  0.08333        15.08      FALSE
+Annual_grass-Shrub           15.00000        15.08      FALSE
+Annual_grass-Tree            28.58333        15.08       TRUE
+Perennial_grass-Shrub        14.91667        15.08      FALSE
+Perennial_grass-Tree         28.50000        15.08       TRUE
+Shrub-Tree                   13.58333        15.08      FALSE
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+: : : : : : : : : : OTU  3323 : : : : : : : : : : 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+### Kruskal Wallis ###
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$zone)
+Kruskal-Wallis chi-squared = 6.503, df = 3, p-value = 0.08955
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$type)
+Kruskal-Wallis chi-squared = 17.35, df = 1, p-value = 3.108e-05
+
+
+	Kruskal-Wallis rank sum test
+
+data:  this_OTU$value by factor(this_OTU$month)
+Kruskal-Wallis chi-squared = 1.367, df = 1, p-value = 0.2423
+
+kruskal wallis significant so doing post-hoc test:
+
+Multiple comparison test after Kruskal-Wallis 
+p.value: 0.05 
+Comparisons
+              obs.dif critical.dif difference
+crust-subsoil   16.62        7.921       TRUE
