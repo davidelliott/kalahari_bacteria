@@ -22,7 +22,7 @@ This html file is generated from source file [kalahari_BSC_bacteria.Rmd](kalahar
 options(width=160)
 do_extras <- TRUE
 # Load required packages
-library("phyloseq"); library("ggplot2"); library("scales"); library("grid"); library("reshape"); library(RColorBrewer); library("xtable"); library("vegan")
+library("phyloseq"); library("ggplot2"); library("scales"); library("grid"); library("reshape2"); library(RColorBrewer); library("xtable"); library("vegan"); library("plyr")
 packageVersion("phyloseq")
 packageVersion("ggplot2")
 packageVersion("scales")
