@@ -872,3 +872,68 @@ print(CN_ratio)
 dev.off()
 
 ```
+
+## BES workshop
+```{r}
+           
+# set sampling date based on month in metadata
+sample_data(expt)$collection_date <- NA
+sample_data(expt)[sample_data(expt)$month=="Mar","collection_date"] <- "01/03/2012"
+sample_data(expt)[sample_data(expt)$month=="Nov","collection_date"] <- "01/11/2011"
+
+# set sampling depth
+sample_data(expt)$depth.cm. <- NA
+sample_data(expt)[sample_data(expt)$depth==0,"depth.cm."] <- "'0-1'"
+sample_data(expt)[sample_data(expt)$depth==1,"depth.cm."] <- "'1-2'"
+
+# fill in all the requested columns (bacteria)
+sample_data(expt)$Study_refno <- 16
+sample_data(expt)$Sample_Name <- sample_names(expt)
+# sample_data(expt)$collection_date <- "07/11/2011"
+sample_data(expt)$owner <- "David Elliott"
+sample_data(expt)$country <- "Botswana"
+sample_data(expt)$location <- "Kalahari"
+sample_data(expt)$latitude <- sample_data(expt)$lat
+sample_data(expt)$longitude <- sample_data(expt)$lon
+sample_data(expt)$altitude.elevation.meter. <- NA
+# sample_data(expt)$moisture 
+# sample_data(expt)$depth.cm. <- "0-15"
+sample_data(expt)$pH <- 5.9
+sample_data(expt)$pH_method <- "estimate"
+sample_data(expt)$C <- sample_data(expt)$Carbon
+sample_data(expt)$N <- sample_data(expt)$Nitrogen
+sample_data(expt)$P <- NA
+sample_data(expt)$Natural_or_Managed <- "natural"
+sample_data(expt)$current_vegetation <- "bare"
+sample_data(expt)$biome.latitude. <- "desert"
+sample_data(expt)$biome.humidity. <- "arid"
+sample_data(expt)$habitat <- "xeric shrubland"
+sample_data(expt)$Experiment <- "no"
+sample_data(expt)$Exp_treatment <- NA
+sample_data(expt)$Exp_description <- NA
+sample_data(expt)$sequencing_platform <- "454"
+sample_data(expt)$primers <- "341F/907R"
+sample_data(expt)$seq_region <- "V3"
+sample_data(expt)$gene <- "16S"
+sample_data(expt)$processing_method <- "UCLUST"
+sample_data(expt)$taxonomy_database <- "greengenes"
+sample_data(expt)$description <- "soil"
+
+
+wanted_cols[!wanted_cols%in%names(sample_data(expt))]
+
+# List the asked-for columns
+wanted_cols <- c("Study_refno","Sample_Name","collection_date","owner","country","location","latitude","longitude","altitude.elevation.meter.","moisture","depth.cm.","pH","pH_method","N","C","P","Natural_or_Managed","current_vegetation","biome.latitude.","biome.humidity.","habitat","Experiment","Exp_treatment","Exp_description","sequencing_platform","primers","seq_region","gene","processing_method","taxonomy_database","description")
+# list the extra columns
+index <- !names(sample_data(expt))%in%wanted_cols
+other_cols <- names(sample_data(expt))[index]
+# join them together
+cols <- c(wanted_cols,other_cols)
+
+write.csv(otu_table(expt),"16_otu_count.csv")
+write.csv(otu_table(expt.rel)/100,"16_otu.csv")
+write.csv(sample_data(expt)[,cols],"16_env.csv")
+write.csv(tax_table(expt),"16_tax_alt.csv")
+
+```
+
