@@ -264,6 +264,7 @@ p_rich_carbon = p_rich_carbon + xlab("% w/w carbon")
 ```{r abundant_otus3,echo=FALSE,message=FALSE,fig.width=16, comment="",fig.show='hide',warning=FALSE, eval=TRUE,results='hide',cache=FALSE}
 
 expt.phylum <- tax_glom(expt.filtered,taxrank="Phylum")
+expt.phylum.rel <- transform_sample_counts(expt.phylum, function(x) 100*x/(sum(x))) # this is exported as csv at the end of the script
 calcs_for_manuscript["total phyla"] <- ntaxa(expt.phylum)
   
 TopNOTUs <- names(sort(taxa_sums(expt.phylum), TRUE)[1:9])
@@ -920,8 +921,6 @@ sample_data(expt)$taxonomy_database <- "greengenes"
 sample_data(expt)$description <- "soil"
 
 
-wanted_cols[!wanted_cols%in%names(sample_data(expt))]
-
 # List the asked-for columns
 wanted_cols <- c("Study_refno","Sample_Name","collection_date","owner","country","location","latitude","longitude","altitude.elevation.meter.","moisture","depth.cm.","pH","pH_method","N","C","P","Natural_or_Managed","current_vegetation","biome.latitude.","biome.humidity.","habitat","Experiment","Exp_treatment","Exp_description","sequencing_platform","primers","seq_region","gene","processing_method","taxonomy_database","description")
 # list the extra columns
@@ -934,6 +933,13 @@ write.csv(otu_table(expt),"16_otu_count.csv")
 write.csv(otu_table(expt.rel)/100,"16_otu.csv")
 write.csv(sample_data(expt)[,cols],"16_env.csv")
 write.csv(tax_table(expt),"16_tax_alt.csv")
+
+
+
+  ptable <- cbind(tax_table(expt.phylum.rel)[,2],  otu_table(expt.phylum.rel) )
+  row.names(ptable) <- ptable[,"Phylum"]
+  pt <- ptable[,-1]
+  write.csv( pt ,"otu_table_bacteria_phylum_rel.csv")
 
 ```
 
